@@ -5,14 +5,25 @@ function createEnemy(type) {
 }
 
 
-function generateEnemies(level, enemies) {
-	for (var i = 0; i < 30; i++)
+function generateEnemies(level) {
+
+
+
+	for (var i = 0; i < 10; i++)
     {
-        var s = enemies.create(game.world.randomX, game.world.randomY, 'enemyTriangle');
-        s.name = 'enemy' + s;
-        s.body.collideWorldBounds = true;
-        s.body.bounce.setTo(0.8, 0.8);
-        s.scale.setTo(0.3,0.3);
+        var enemy = game.add.sprite(game.world.randomX, game.world.randomY, 'enemyTriangle');
+        game.physics.arcade.enable(enemy, Phaser.Physics.ARCADE);
+        game.add.tween(enemy.body).to( center, 10000, Phaser.Easing.Linear.None, true);
+
+
+        enemies.push(enemy);
+
+
         
     }
+}
+
+function moveEnemies() {
+
+	
 }
