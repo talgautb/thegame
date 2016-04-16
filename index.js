@@ -2,19 +2,19 @@
  * The game - index.js
  */
 
- var game = new Phaser.Game(1800, 800, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
-
-function preload() {
-
-	game.load.image('enemyTriangle', 'assets/enemies/triangle.png');    
-
-}
-
+var game = new Phaser.Game(1500, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var sprite;
 var enemyTriangle;
-
-
 var currentLevel = 1;
 var enemies;
+
+function preload() {
+  //  You can fill the preloader with as many assets as your game requires
+
+	game.load.image('enemyTriangle', 'assets/enemies/triangle.png');    
+	game.load.image('hero', 'assets/hero/hero.png');
+  	game.load.image('bullet', 'assets/hero/tomato.png');
+}
 
 
 function create() {
@@ -26,10 +26,16 @@ function create() {
 
     generateEnemies(currentLevel, enemies);
 
-     
+  	// Create our hero here
+  	createHero();
+
+  	//  And enable the Sprite to have a physics body:
+  	game.physics.arcade.enable(sprite, Phaser.Physics.ARCADE);
+    
  }
 
 function update () {
+
 
 	if (game.input.mousePointer.isDown)
     {
@@ -44,11 +50,10 @@ function update () {
         enemies.setAll('body.velocity.y', 0);
     }
     
+  	updateHero();
 
 }
 
 function render () {
-
-	game.debug.inputInfo(32, 32);
-
+  renderHero();
 }
