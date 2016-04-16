@@ -2,48 +2,48 @@
  * The game - index.js
  */
 
- var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+ var game = new Phaser.Game(1800, 800, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
 
-    //  You can fill the preloader with as many assets as your game requires
-
-    //  Here we are loading an image. The first parameter is the unique
-    //  string by which we'll identify the image later in our code.
-
-    //  The second parameter is the URL of the image (relative)
-    game.load.image('phaser', 'assets/sprites/phaser.png');
+	game.load.image('enemyTriangle', 'assets/enemies/triangle.png');    
 
 }
 
-var sprite;
+var enemyTriangle;
+
+
+var currentLevel = 1;
+var enemies;
+
 
 function create() {
-
     //  To make the sprite move we need to enable Arcade Physics
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    sprite = game.add.sprite(game.world.centerX, game.world.centerY, 'phaser');
-    sprite.anchor.set(0.5);
+    enemies = game.add.group();
+    enemies.enableBody = true;
 
-    //  And enable the Sprite to have a physics body:
-    game.physics.arcade.enable(sprite);
+    generateEnemies(currentLevel, enemies);
 
-}
+     
+ }
 
 function update () {
 
-    //  If the sprite is > 8px away from the pointer then let's move to it
-    if (game.physics.arcade.distanceToPointer(sprite, game.input.activePointer) > 8)
+	if (game.input.mousePointer.isDown)
     {
-        //  Make the object seek to the active pointer (mouse or touch).
-        game.physics.arcade.moveToPointer(sprite, 300);
+        //  First is the callback
+        //  Second is the context in which the callback runs, in this case game.physics.arcade
+        //  Third is the parameter the callback expects - it is always sent the Group child as the first parameter
+        enemies.forEach(game.physics.arcade.moveToPointer, game.physics.arcade, false, 200);
     }
     else
     {
-        //  Otherwise turn off velocity because we're close enough to the pointer
-        sprite.body.velocity.set(0);
+        enemies.setAll('body.velocity.x', 0);
+        enemies.setAll('body.velocity.y', 0);
     }
+    
 
 }
 
