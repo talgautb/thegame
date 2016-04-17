@@ -19,6 +19,7 @@ var center = {
 	y: 300
 }
 var spaceBtn;
+var score;
 
 function preload() {
   //  You can fill the preloader with as many assets as your game requires
@@ -29,6 +30,7 @@ function preload() {
 
 function create() {
   showPreview();
+  resetScore();
   //  To make the sprite move we need to enable Arcade Physics
   game.physics.startSystem(Phaser.Physics.ARCADE);
 	// generate 10 enemies
@@ -61,6 +63,7 @@ function killEnemy(enemy, bullet) {
   enemy.kill();
   bullet.kill();
   createEnemy(baseLevel);
+  updateScore();
 }
 
 function gameOver(hero, enemy) {
@@ -72,7 +75,7 @@ function gameOver(hero, enemy) {
 }
 
 function render () {
-  renderHero();
+  renderScore();
 }
 
 function killEnemies() {
@@ -85,4 +88,16 @@ function restart() {
   stateText.visible = false;
   game.stage.backgroundColor = '#000';
   create();
+}
+
+function updateScore() {
+  score = score + 1;
+}
+
+function resetScore() {
+  score = 0;
+}
+
+function renderScore() {
+  game.debug.text('Current score: ' + score, 32, 32);
 }
