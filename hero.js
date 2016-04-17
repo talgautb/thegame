@@ -15,14 +15,14 @@ function createHero() {
   bullets.setAll('checkWorldBounds', true);
   bullets.setAll('outOfBoundsKill', true);
   
-  sprite = game.add.sprite(750, 300, 'hero');
+  sprite = game.add.sprite(center.x, center.y, 'hero');
   sprite.anchor.set(0.5);
 }
 
 function updateHero() {
   sprite.rotation = game.physics.arcade.angleToPointer(sprite);
 
-  if (game.input.activePointer.isDown) {
+  if (game.input.activePointer.isDown && !stateText.visible) {
     fire();
   }
 }
@@ -40,6 +40,6 @@ function fire() {
 }
 
 function renderHero() {
-  game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.total, 32, 32);
-  game.debug.spriteInfo(sprite, 32, 450);
+  // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.total, 32, 32);
+  // game.debug.spriteInfo(sprite, 32, 450);
 }

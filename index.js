@@ -2,7 +2,7 @@
  * The game - index.js
  */
 
-var game = new Phaser.Game(1500, 600, Phaser.AUTO, 'phaser-example',
+var game = new Phaser.Game(960, 600, Phaser.AUTO, 'phaser-example',
   {
     preload: preload,
     create: create,
@@ -13,11 +13,12 @@ var sprite;
 var enemyTriangle;
 var baseLevel = 3; // 3 == triangle
 var enemies = [];
-
+var stateText;
 var center = {
-	x: 750,
+	x: 480,
 	y: 300
 }
+var spaceBtn;
 
 function preload() {
   //  You can fill the preloader with as many assets as your game requires
@@ -27,6 +28,7 @@ function preload() {
 }
 
 function create() {
+  showPreview();
   //  To make the sprite move we need to enable Arcade Physics
   game.physics.startSystem(Phaser.Physics.ARCADE);
 	// generate 10 enemies
@@ -35,12 +37,24 @@ function create() {
 	createHero();
 	//  And enable the Sprite to have a physics body:
 	game.physics.arcade.enable(sprite, Phaser.Physics.ARCADE);
+  spaceBtn = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
  }
 
 function update () {
   moveEnemies();
 	updateHero();
   game.physics.arcade.collide(bullets, enemies, killEnemy, null, this);
+  game.physics.arcade.overlap(enemies, sprite, gameOver, null, this);
+
+  if (spaceBtn.isDown && stateText.visible) {
+    restart();
+  }
+}
+
+function showPreview() {
+  stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '84px Arial', fill: '#fff' });
+  stateText.anchor.setTo(0.5, 0.5);
+  stateText.visible = false;
 }
 
 function killEnemy(enemy, bullet) {
@@ -49,6 +63,26 @@ function killEnemy(enemy, bullet) {
   createEnemy(baseLevel);
 }
 
+function gameOver(hero, enemy) {
+  game.stage.backgroundColor = '#992d2d';
+  killEnemies();
+  sprite.kill();
+  stateText.text=" GAME OVER \n Press SPACE to restart";
+  stateText.visible = true;
+}
+
 function render () {
   renderHero();
+}
+
+function killEnemies() {
+  for (var i = 0; i < enemies.length; i++) {
+    enemies[i].kill();
+  }
+}
+
+function restart() {
+  stateText.visible = false;
+  game.stage.backgroundColor = '#000';
+  create();
 }
