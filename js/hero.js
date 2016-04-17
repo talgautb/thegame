@@ -28,6 +28,7 @@ function updateHero() {
 }
 
 function fire() {
+  blaster.play();
   if (game.time.now > nextFire && bullets.countDead() > 0) {
     nextFire = game.time.now + fireRate;
 
