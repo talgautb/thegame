@@ -1,6 +1,6 @@
 {
   "name": "thegame",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,5 @@
     "url": "https://github.com/talgautb/thegame/issues"
   },
   "homepage": "https://github.com/talgautb/thegame#readme",
-  "devDependencies": {
-    "phaser": "^2.4.6"
-  }
+  "devDependencies": {}
 }
