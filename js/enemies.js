@@ -56,8 +56,6 @@ function createEnemy(type) {
 function generateEnemies(level) {
   var lvl = (level) ? level : 3;
 
-
-
   for (var i = 0; i < 10; i++) {
     var probability = parseInt(Math.random() * 100.0);
     if (probability < 20) {

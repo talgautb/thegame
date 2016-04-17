@@ -91,7 +91,18 @@ function killEnemy(enemy, bullet) {
 
     if (enemy.lives == 0) {
       enemy.kill();
-      createEnemy(baseLevel);
+
+      var probability = parseInt(Math.random() * 100.0);
+      if (probability < 20) {
+        createEnemy(5);  
+      } else 
+      if (probability < 50) {
+        createEnemy(4);  
+      } else {
+        createEnemy(3);
+      }
+
+      
       updateScore();  
 
       explosion.play();
