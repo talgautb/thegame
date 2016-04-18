@@ -47,9 +47,34 @@ function createEnemy(type) {
     enemy.scale.y = 0.2;
     enemy.lives = 3;
     game.physics.arcade.enable(enemy, Phaser.Physics.ARCADE);
+    game.add.tween(enemy.body).to( center, 6000, Phaser.Easing.Linear.None, true);
+    enemies.push(enemy);
+  } else 
+  if (lvl === 6) {
+    var enemy = game.add.sprite(x, y, 'enemyHexagon');
+    enemy.scale.x = 0.2;
+    enemy.scale.y = 0.2;
+    enemy.lives = 4;
+    game.physics.arcade.enable(enemy, Phaser.Physics.ARCADE);
     game.add.tween(enemy.body).to( center, 4000, Phaser.Easing.Linear.None, true);
     enemies.push(enemy);
   }
+}
+
+function generateEnemy(level) {
+  var lvl = (level) ? level : 3;
+  var probability = parseInt(Math.random() * 100.0);
+    if (probability <= 10) {
+      createEnemy(6);  
+    } else 
+    if (probability <= 30) {
+      createEnemy(5);  
+    } else
+    if (probability <= 60) {
+      createEnemy(4);
+    } else {
+      createEnemy(3);
+    }
 }
 
 
@@ -57,16 +82,7 @@ function generateEnemies(level) {
   var lvl = (level) ? level : 3;
 
   for (var i = 0; i < 10; i++) {
-    var probability = parseInt(Math.random() * 100.0);
-    if (probability < 20) {
-      createEnemy(5);  
-    } else 
-    if (probability < 50) {
-      createEnemy(4);  
-    } else {
-      createEnemy(3);
-    }
-    
+    generateEnemy(lvl);  
   }
 }
 

@@ -31,6 +31,8 @@ function preload() {
 	game.load.image('enemyTriangle', 'assets/enemies/triangle.png');    
   game.load.image('enemySquare', 'assets/enemies/square.png');    
   game.load.image('enemyPentagon', 'assets/enemies/pentagon.png');    
+  game.load.image('enemyHexagon', 'assets/enemies/hexagon.png');    
+
 	game.load.image('hero', 'assets/hero/hero.png');
   game.load.image('bullet', 'assets/hero/tomato.png');
   game.load.image('space', 'assets/common/deep-space.jpg');
@@ -53,6 +55,8 @@ function create() {
 
   music.play();
 
+  game.input.mouse.capture = true;
+
   showPreview();
   resetScore();
   //  To make the sprite move we need to enable Arcade Physics
@@ -74,7 +78,7 @@ function update () {
   game.physics.arcade.collide(bullets, enemies, killEnemy, null, this);
   game.physics.arcade.overlap(enemies, sprite, gameOver, null, this);
 
-  if (spaceBtn.isDown && stateText.visible) {
+  if ((spaceBtn.isDown || game.input.activePointer.leftButton.isDown) && stateText.visible) {
     restart();
   }
 }
@@ -92,16 +96,7 @@ function killEnemy(enemy, bullet) {
     if (enemy.lives == 0) {
       enemy.kill();
 
-      var probability = parseInt(Math.random() * 100.0);
-      if (probability < 20) {
-        createEnemy(5);  
-      } else 
-      if (probability < 50) {
-        createEnemy(4);  
-      } else {
-        createEnemy(3);
-      }
-
+      generateEnemy();
       
       updateScore();  
 
@@ -113,9 +108,10 @@ function killEnemy(enemy, bullet) {
 
       if (enemy.lives == 1) {
         enemy.loadTexture('enemyTriangle', 0);  
-      } if (enemy.lives == 2) {
+      } else if (enemy.lives == 2) {
         enemy.loadTexture('enemySquare', 0);  
-
+      } else if (enemy.lives == 3) {
+        enemy.loadTexture('enemyPentagon', 0);  
       }
       
 
@@ -131,7 +127,7 @@ function gameOver(hero, enemy) {
   game.stage.backgroundColor = '#992d2d';
   killEnemies();
   sprite.kill();
-  stateText.text=" GAME OVER \n Press SPACE to restart";
+  stateText.text=" GAME OVER \n Press SPACE or CLICK \n to restart";
   stateText.visible = true;
 
   music.stop();
